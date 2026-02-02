@@ -26,34 +26,42 @@ public class Engineer : MonoBehaviour
         animator.SetFloat ("vAxisInput", verticalInput);
         animator.SetFloat ("hAxisInput", horizontalInput);
 
-        // Detect W Key press
-        if (Input.GetKey (KeyCode.Z)) 
+        // Detect Run
+        if (Input.GetKey(KeyCode.Z)) 
         {
-            // Set runBool to true if pressed
             animator.SetBool ("isRunning", true);
             Debug.Log ("Run");
         } 
         else 
         {
-            // Set runBool to false if not pressed
             animator.SetBool ("isRunning", false);
             Debug.Log ("No Run");
         }
-        
 
-        // Detect C Key press
+        // Detect Jump
+        if (Input.GetKey (KeyCode.Space)) 
+        {
+            animator.SetTrigger("jumpTrigger");
+            Debug.Log ("Jumped");
+        } 
+        else 
+        {
+            animator.ResetTrigger("jumpTrigger");
+            animator.SetBool ("isJumping", false);
+        }
+
+        // Detect Crouch layer swap
         if (Input.GetKey (KeyCode.C)) 
         {
             // Set the Crouch Layer Weight to 0.5, this
             // activtes the masked couch animation
-            animator.SetLayerWeight (0, 0.5f);
+            animator.SetLayerWeight (1, 0.5f);
         } 
         else 
         {
             // Set the Couch Layer Weight back to 0.0
             // This deactivated the crouch animation
-            animator.SetLayerWeight (0, 0.0f);
+            animator.SetLayerWeight (1, 0.0f);
         }
-
     }
 }
