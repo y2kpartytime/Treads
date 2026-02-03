@@ -10,7 +10,7 @@ public class RunState : StateMachineBehaviour
     {
         audioSources = animator.GetComponentsInParent<AudioSource>();
         audioSources[0].Play();
-        audioSources[0].pitch = 1.2f;
+        audioSources[0].pitch = .75f;
     }
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
