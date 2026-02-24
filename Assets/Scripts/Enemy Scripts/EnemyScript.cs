@@ -33,7 +33,7 @@ public class EnemyScript : MonoBehaviour
     float speed;
     // Create an enum to control the movement type of the AI ball-
     // this will allow us to test both seek and arrive in the same script
-    public enum MovementType { Idle, Seek, Arrive, Patrol };
+    public enum MovementType { Idle, Seek, Arrive, Patrol, Flee };
     public MovementType movementType;
     // Reference to NavMeshAgent component
     NavMeshAgent navAgent;
@@ -127,7 +127,7 @@ public class EnemyScript : MonoBehaviour
         else if (movementType == MovementType.Patrol) {
         outputVelocity = Patrol();
         }
-        // Run Arrive Movement
+        
         
         GetComponent<Rigidbody> ().AddForce (outputVelocity, ForceMode.VelocityChange);
     }
