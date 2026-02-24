@@ -11,6 +11,7 @@ public class EnemyScript : MonoBehaviour
     public float fieldOfViewAngle = 80f;
     public float hearingRange = 5f;
     Vector3 lastKnownPosition;
+    public Camera playerCamera;
 
     public GameObject playerSphere;
     // as the game becomes more complex, constants should be moved to data files (not PlayerPrefs)
@@ -67,6 +68,19 @@ public class EnemyScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate ()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    Destroy(hit.collider.gameObject);
+                }
+            }
+        }
+
         isVisible = CanSeePlayer();
         isAudible = CanHearPlayer();
 
@@ -86,7 +100,6 @@ public class EnemyScript : MonoBehaviour
         {
             movementType = MovementType.Patrol;
         }
-
         //We multiply by Time.deltaTime to ensure the same distance is achieved across different framerates
         moveDistance = MAX_MOVE_DISTANCE;
         source = transform.position;
@@ -114,12 +127,11 @@ public class EnemyScript : MonoBehaviour
         else if (movementType == MovementType.Patrol) {
         outputVelocity = Patrol();
         }
-
-
         // Run Arrive Movement
         
         GetComponent<Rigidbody> ().AddForce (outputVelocity, ForceMode.VelocityChange);
     }
+
     void Start()
     {
         Rigidbody rb = GetComponent<Rigidbody>();
@@ -263,14 +275,14 @@ public class EnemyScript : MonoBehaviour
 
         return false;
     }
-        // Trigger for prox
+    
+    // Trigger for prox chase
     public void OnTriggerEnter(Collider other) 
     {
         if (other.gameObject.tag == "Player")
         {
             movementType = MovementType.Seek;
-            print("Player detected");
+            print("Chases player");
         }
     }
-    
 }
