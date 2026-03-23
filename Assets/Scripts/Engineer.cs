@@ -8,13 +8,13 @@ public class Engineer : MonoBehaviour
     float verticalInput;
     float horizontalInput;
     public float turnSpeed = 150.0f;
+    public GameSettings settings;
     
     void Start () 
     {
         //get the Animator Controller Component from the character component hierarchy
         animator = GetComponent<Animator>();
-
-        
+        Debug.Log("Speed: " + settings.playerSpeed);
     }
 
     // Update is called once per frame
