@@ -22,6 +22,7 @@ public class EnemyScript : MonoBehaviour
     const float DECELERATION_FACTOR = 1f;
     //now variables needed by FixedUpdate
     float moveDistance;
+    private Animator animator;
     Vector3 source;
     Vector3 target;
     Vector3 outputVelocity;
@@ -33,7 +34,7 @@ public class EnemyScript : MonoBehaviour
     float speed;
     // Create an enum to control the movement type of the AI ball-
     // this will allow us to test both seek and arrive in the same script
-    public enum MovementType { Idle, Seek, Arrive, Patrol, Flee };
+    public enum MovementType { Idle, Seek, Arrive, Patrol, Smell };
     public MovementType movementType;
     // Reference to NavMeshAgent component
     NavMeshAgent navAgent;
@@ -52,6 +53,10 @@ public class EnemyScript : MonoBehaviour
 
     Vector3 currentPatrolTarget;
     bool hasPatrolTarget;
+    void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     void OnDrawGizmos()
     {
@@ -115,17 +120,21 @@ public class EnemyScript : MonoBehaviour
         // Run Seek Movement
         if (movementType == MovementType.Seek) {
         outputVelocity = Seek (source, target, moveDistance);
+        animator.SetBool("isAlert", true);
         Debug.Log("Seeking");
         }
         else if (movementType == MovementType.Arrive) {
+        animator.SetBool("isAlert", false);
         outputVelocity = Arrive (source, target);
         Debug.Log("Arriving");
         }
         else if (movementType == MovementType.Idle) {
+            animator.SetBool("isAlert", false);
         outputVelocity = Idle();
         }
         else if (movementType == MovementType.Patrol) {
         outputVelocity = Patrol();
+        animator.SetBool("isAlert", true);
         }
         
         
@@ -170,7 +179,7 @@ public class EnemyScript : MonoBehaviour
         // Get direction to the target
         directionToTarget = Vector3.Normalize (target - source);
         // Calculate current speed
-        speed = distanceToTarget / DECELERATION_FACTOR;
+        speed = 10f;
         // Use Speed to control deceleration
         velocityToTarget = speed * directionToTarget;
         // To Calculate the force to the target, subtract the objects current
@@ -279,10 +288,10 @@ public class EnemyScript : MonoBehaviour
     // Trigger for prox chase
     public void OnTriggerEnter(Collider other) 
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Smells player")
         {
-            movementType = MovementType.Seek;
-            print("Chases player");
+            movementType = MovementType.Smell;
+            print("Sniffing player");
         }
     }
 }

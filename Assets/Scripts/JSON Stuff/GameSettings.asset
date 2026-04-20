@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 398ad059359c0504a8845c89742a16a0, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: Assembly-CSharp::GameSettings
-  defaultHealth: 50
-  playerSpeed: 5
+  defaultHealth: 100
+  playerSpeed: 6
