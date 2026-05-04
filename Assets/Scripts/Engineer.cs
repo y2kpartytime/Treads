@@ -14,7 +14,7 @@ public class Engineer : NetworkBehaviour
     void Start () 
     {
         //get the Animator Controller Component from the character component hierarchy
-        animator = GetComponent<Animator>();
+        
         Debug.Log("Speed: " + settings.playerSpeed);
     }
 
@@ -24,14 +24,23 @@ public class Engineer : NetworkBehaviour
         // Get the input from vertical/horizontal axis
         if (!IsOwner) return;
 
+        animator = GetComponent<Animator>();
         verticalInput = Input.GetAxis("Vertical");
         horizontalInput = Input.GetAxis("Horizontal");
 
         transform.Rotate(0f, horizontalInput * turnSpeed * Time.deltaTime, 0f);
+        //UpdateAnimationServerRpc(verticalInput, horizontalInput);
     }
+
+    /*void UpdateAnimationServerRpc(float vertical, float horizontal)
+    {
+        animator.SetFloat("vAxisInput", vertical);
+        animator.SetFloat("hAxisInput", horizontal);
+    }*/
 
     void FixedUpdate()
     {
+        if (!IsOwner) return;
         // Now set the animator float values (vAxisInput/hAxisInput)
         animator.SetFloat ("vAxisInput", verticalInput);
         animator.SetFloat ("hAxisInput", horizontalInput);
@@ -92,4 +101,18 @@ public class Engineer : NetworkBehaviour
             animator.SetLayerWeight (1, 0.0f);
         }
     }
+    public Camera playerCam;
+
+    public override void OnNetworkSpawn()
+{
+    if (!IsOwner)
+    {
+        playerCam.enabled = false;
+
+        if (playerCam.TryGetComponent(out AudioListener listener))
+        {
+            listener.enabled = false;
+        }
+    }
+}
 }
