@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Scene3_Script2 : MonoBehaviour {
+public class DoorScript : MonoBehaviour {
 
 	// Declare Animator Object
 	Animator animator;
@@ -16,7 +16,7 @@ public class Scene3_Script2 : MonoBehaviour {
 	void OnTriggerEnter(Collider other){
 
 		// Ensure door only Opens for Teddy
-		if (other.gameObject.name == "Player" ) {
+		if (other.gameObject.name == "Player 1(Clone)" ) {
 
 			// Set doorOpen bool to true
 			// This triggers DoorSlideUp animation 
@@ -28,7 +28,7 @@ public class Scene3_Script2 : MonoBehaviour {
 	// This fucntion is triggered each time the collider exits interaction with Teddy
 	void OnTriggerExit(Collider other){
 		// Ensure door only Closes for Teddy
-		if (other.gameObject.name == "Player") {
+		if (other.gameObject.name == "Player 1(Clone)" ) {
 
 			// Set doorOpen bool to true
 			// This triggers DoorSlideDown animation 
