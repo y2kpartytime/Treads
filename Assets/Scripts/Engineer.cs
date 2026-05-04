@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class Engineer : MonoBehaviour
+public class Engineer : NetworkBehaviour
 {
     Animator animator;
 
@@ -21,6 +22,8 @@ public class Engineer : MonoBehaviour
     void Update () 
     {
         // Get the input from vertical/horizontal axis
+        if (!IsOwner) return;
+
         verticalInput = Input.GetAxis("Vertical");
         horizontalInput = Input.GetAxis("Horizontal");
 

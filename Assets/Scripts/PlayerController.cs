@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     float rotation;
     Vector2 inputs;
@@ -28,12 +29,14 @@ public class PlayerController : MonoBehaviour
     }
 
     void Update()
-    {
-        GetInputs();
-        Movement();
-        Gravity();
-        Rotation();
-    }
+{
+    if (!IsOwner) return;
+
+    GetInputs();
+    Movement();
+    Gravity();
+    Rotation();
+}
 
     void Movement()
     {   
